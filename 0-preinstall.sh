@@ -1,12 +1,18 @@
-#!/usr/bin/env bash
-#-------------------------------------------------------------------------
-#   █████╗ ██████╗  ██████╗██╗  ██╗████████╗██╗████████╗██╗   ██╗███████╗
-#  ██╔══██╗██╔══██╗██╔════╝██║  ██║╚══██╔══╝██║╚══██╔══╝██║   ██║██╔════╝
-#  ███████║██████╔╝██║     ███████║   ██║   ██║   ██║   ██║   ██║███████╗
-#  ██╔══██║██╔══██╗██║     ██╔══██║   ██║   ██║   ██║   ██║   ██║╚════██║
-#  ██║  ██║██║  ██║╚██████╗██║  ██║   ██║   ██║   ██║   ╚██████╔╝███████║
-#  ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝   ╚═╝   ╚═╝   ╚═╝    ╚═════╝ ╚══════╝
-#-------------------------------------------------------------------------
+ #!/usr/bin/env bash
+#----------------------------------------------------------------------------
+#
+#      **               **                      **                    **     
+#     ****             /**                     ****                  /**     
+#    **//**   **   ** ******  ******          **//**   ******  ***** /**     
+#   **  //** /**  /**///**/  **////** *****  **  //** //**//* **///**/****** 
+#  **********/**  /**  /**  /**   /**/////  ********** /** / /**  // /**///**
+# /**//////**/**  /**  /**  /**   /**      /**//////** /**   /**   **/**  /**
+# /**     /**//******  //** //******       /**     /**/***   //***** /**  /**
+# //      //  //////    //   //////        //      // ///     /////  //   // 
+#
+#----------------------------------------------------------------------------
+# Edited by @anthonp | 0-preinstall.sh
+#----------------------------------------------------------------------------
 SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 echo "-------------------------------------------------"
 echo "Setting up mirrors for optimal download          "
@@ -18,13 +24,17 @@ setfont ter-v22b
 sed -i 's/^#Para/Para/' /etc/pacman.conf
 pacman -S --noconfirm reflector rsync
 cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
-echo -e "-------------------------------------------------------------------------"
-echo -e "   █████╗ ██████╗  ██████╗██╗  ██╗████████╗██╗████████╗██╗   ██╗███████╗"
-echo -e "  ██╔══██╗██╔══██╗██╔════╝██║  ██║╚══██╔══╝██║╚══██╔══╝██║   ██║██╔════╝"
-echo -e "  ███████║██████╔╝██║     ███████║   ██║   ██║   ██║   ██║   ██║███████╗"
-echo -e "  ██╔══██║██╔══██╗██║     ██╔══██║   ██║   ██║   ██║   ██║   ██║╚════██║"
-echo -e "  ██║  ██║██║  ██║╚██████╗██║  ██║   ██║   ██║   ██║   ╚██████╔╝███████║"
-echo -e "  ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝   ╚═╝   ╚═╝   ╚═╝    ╚═════╝ ╚══════╝"
+echo -e "----------------------------------------------------------------------------"
+echo -e "      **               **                      **                    **     "    
+echo -e "     ****             /**                     ****                  /**     "    
+echo -e "    **//**   **   ** ******  ******          **//**   ******  ***** /**     "
+echo -e "   **  //** /**  /**///**/  **////** *****  **  //** //**//* **///**/****** "
+echo -e "  **********/**  /**  /**  /**   /**/////  ********** /** / /**  // /**///**"
+echo -e " /**//////**/**  /**  /**  /**   /**      /**//////** /**   /**   **/**  /**"
+echo -e " /**     /**//******  //** //******       /**     /**/***   //***** /**  /**"
+echo -e " //      //  //////    //   //////        //      // ///     /////  //   // "
+echo -e "----------------------------------------------------------------------------"
+echo -e "Edited by @anthonp | 0-preinstall.sh"
 echo -e "-------------------------------------------------------------------------"
 echo -e "-Setting up $iso mirrors for faster downloads"
 echo -e "-------------------------------------------------------------------------"
@@ -115,14 +125,19 @@ echo "--------------------------------------"
 echo "-- Bootloader Systemd Installation  --"
 echo "--------------------------------------"
 bootctl install --esp-path=/mnt/boot
-[ ! -d "/mnt/boot/loader/entries" ] && mkdir -p /mnt/boot/loader/entries
-cat <<EOF > /mnt/boot/loader/entries/arch.conf
-title Arch Linux  
-linux /vmlinuz-linux  
-initrd  /initramfs-linux.img  
-options root=LABEL=ROOT rw rootflags=subvol=@
-EOF
-cp -R ${SCRIPT_DIR} /mnt/root/ArchTitus
+# Credit @71Zombie/BetterArch/0-preinstall.sh
+sudo cp /boot/loader/entries/arch.conf /boot/loader/entries/arch-hardened.conf
+sudo sed -i 's|Arch Linux|Arch Linux Hardened Kernel|g' /boot/loader/entries/arch-hardened.conf
+sudo sed -i 's|vmlinuz-linux-hardened|vmlinuz-linux-lts|g' /boot/loader/entries/arch-hardened.conf
+sudo sed -i 's|initramfs-linux.img|initramfs-linux-hardened.img|g' /boot/loader/entries/arch-hardened.conf
+# [ ! -d "/mnt/boot/loader/entries" ] && mkdir -p /mnt/boot/loader/entries
+# cat <<EOF > /mnt/boot/loader/entries/arch.conf
+# title Arch Linux  
+# linux /vmlinuz-linux  
+# initrd  /initramfs-linux.img  
+# options root=LABEL=ROOT rw rootflags=subvol=@
+# EOF
+cp -R ${SCRIPT_DIR} /mnt/root/Auto-Arch
 cp /etc/pacman.d/mirrorlist /mnt/etc/pacman.d/mirrorlist
 echo "--------------------------------------"
 echo "-- Check for low memory systems <8G --"
