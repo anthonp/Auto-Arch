@@ -1,12 +1,18 @@
 #!/usr/bin/env bash
-#-------------------------------------------------------------------------
-#   █████╗ ██████╗  ██████╗██╗  ██╗████████╗██╗████████╗██╗   ██╗███████╗
-#  ██╔══██╗██╔══██╗██╔════╝██║  ██║╚══██╔══╝██║╚══██╔══╝██║   ██║██╔════╝
-#  ███████║██████╔╝██║     ███████║   ██║   ██║   ██║   ██║   ██║███████╗
-#  ██╔══██║██╔══██╗██║     ██╔══██║   ██║   ██║   ██║   ██║   ██║╚════██║
-#  ██║  ██║██║  ██║╚██████╗██║  ██║   ██║   ██║   ██║   ╚██████╔╝███████║
-#  ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝   ╚═╝   ╚═╝   ╚═╝    ╚═════╝ ╚══════╝
-#-------------------------------------------------------------------------
+#----------------------------------------------------------------------------
+#
+#      **               **                      **                    **     
+#     ****             /**                     ****                  /**     
+#    **//**   **   ** ******  ******          **//**   ******  ***** /**     
+#   **  //** /**  /**///**/  **////** *****  **  //** //**//* **///**/****** 
+#  **********/**  /**  /**  /**   /**/////  ********** /** / /**  // /**///**
+# /**//////**/**  /**  /**  /**   /**      /**//////** /**   /**   **/**  /**
+# /**     /**//******  //** //******       /**     /**/***   //***** /**  /**
+# //      //  //////    //   //////        //      // ///     /////  //   // 
+#
+#----------------------------------------------------------------------------
+# Edited by @anthonp | 1-setup.sh
+#----------------------------------------------------------------------------
 echo "--------------------------------------"
 echo "--          Network Setup           --"
 echo "--------------------------------------"
@@ -65,12 +71,15 @@ PKGS=(
 'plasma-desktop' # KDE Load second
 'alsa-plugins' # audio plugins
 'alsa-utils' # audio utils
+'apparmor' # Security module
+'appimagelauncher'
 'ark' # compression
 'audiocd-kio' 
 'autoconf' # build
 'automake' # build
 'base'
 'bash-completion'
+'bettercap' # Swiss army knife for network attacks and monitoring
 'bind'
 'binutils'
 'bison'
@@ -82,7 +91,6 @@ PKGS=(
 'bridge-utils'
 'btrfs-progs'
 'celluloid' # video players
-'cmatrix'
 'code' # Visual Studio code
 'cronie'
 'cups'
@@ -93,9 +101,11 @@ PKGS=(
 'efibootmgr' # EFI boot
 'egl-wayland'
 'exfat-utils'
+'fail2ban' # Bans IPs after too many failed authentication attempts
 'flex'
 'fuse2'
 'fuse3'
+'firejail' # Application Sandboxing
 'fuseiso'
 'gamemode'
 'gcc'
@@ -120,18 +130,19 @@ PKGS=(
 'layer-shell-qt'
 'libnewt'
 'libtool'
-'linux'
 'linux-firmware'
-'linux-headers'
+'linux-hardened' # Linux hardening
+'linux-hardened-headers' # Linux hardening
 'lsof'
-'lutris'
 'lzop'
 'm4'
 'make'
+'metasploit' # Exploit
 'milou'
 'nano'
 'neofetch'
 'networkmanager'
+'nmap' # Network scanning program
 'ntfs-3g'
 'ntp'
 'okular'
@@ -147,6 +158,7 @@ PKGS=(
 'plasma-nm'
 'powerline-fonts'
 'print-manager'
+'protonvpn'
 'pulseaudio'
 'pulseaudio-alsa'
 'pulseaudio-bluetooth'
@@ -157,7 +169,7 @@ PKGS=(
 'sddm-kcm'
 'snapper'
 'spectacle'
-'steam'
+'sublime-text-4'
 'sudo'
 'swtpm'
 'synergy'
@@ -171,6 +183,7 @@ PKGS=(
 'vim'
 'virt-manager'
 'virt-viewer'
+'vlc' # Media Player
 'wget'
 'which'
 'wine-gecko'
@@ -220,14 +233,14 @@ fi
 echo -e "\nDone!\n"
 if ! source install.conf; then
 	read -p "Please enter username:" username
-echo "username=$username" >> ${HOME}/ArchTitus/install.conf
+echo "username=$username" >> ${HOME}/Auto-Arch/install.conf
 fi
 if [ $(whoami) = "root"  ];
 then
     useradd -m -G wheel,libvirt -s /bin/bash $username 
 	passwd $username
-	cp -R /root/ArchTitus /home/$username/
-    chown -R $username: /home/$username/ArchTitus
+	cp -R /root/Auto-Arch /home/$username/
+    chown -R $username: /home/$username/Auto-Arch
 	read -p "Please name your machine:" nameofmachine
 	echo $nameofmachine > /etc/hostname
 else
